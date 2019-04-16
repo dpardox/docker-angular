@@ -1,51 +1,35 @@
 # Image based on the official Node 10 image from dockerhub
 FROM node:10.15.3
 
-# Author
-LABEL author="Steven Pardo"
-
-# Add new user
-# RUN useradd --user-group --create-home --shell /bin/false app
-
 # Directory where app will be placed
-RUN mkdir /usr/src/app
+RUN mkdir -p /app
 
 # Change directory so that commands run inside this new directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Install Angular CLI
 RUN npm install -g @angular/cli@7.3.8
 
-# Remove dependencies
-# RUN rm -rf ./node_modules
-
-# Cache clean
-# RUN npm cache verify
-
-# Copy files
-# COPY . /app
+# Copy dependency definitions
+COPY package*.json /app/
 
 # Install dependencies
-# RUN npm install
-
-# Rebuild sass
-# RUN npm rebuild node-sass --force
+RUN npm install
 
 # Get all the code needed to run the app
-# COPY . .
+COPY . /app/
 
-# Expose the port the app runs in
+# Expose port the app runs in
 EXPOSE 4200
 
-# Expose the port to livereload
+# Expose port to livereload
 EXPOSE 49153
 
-# Expose the port to test
-# EXPOSE 9876
+# Expose port to test
+EXPOSE 9876
 
-# Expose the port to e2e
-# EXPOSE 49152
+# Expose port to e2e
+EXPOSE 49152
 
-# Serve the app
-# CMD ["npm", "start"]
-# CMD npm start
+# Serve app
+CMD npm start
